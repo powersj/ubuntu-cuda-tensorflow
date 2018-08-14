@@ -76,9 +76,9 @@ update-alternatives --install /usr/bin/python python /usr/bin/python3 100 --slav
 
 ## Tensorflow
 
-After all that, it is time for the main event. Here is an example [configure session](https://paste.ubuntu.com/p/74yhnKBrQk/). For the record the 7.0 is the Tesla v100.
+After all that, it is time for the main event. Here is an example set of [configure](https://paste.ubuntu.com/p/74YJCfTG6W/) answers. GCC 7 and later are not supported and for the record the 7.0 is the Tesla v100.
 
-```
+```shell
 git clone https://github.com/tensorflow/tensorflow
 cd tensorflow
 git checkout r1.10
@@ -86,5 +86,3 @@ git checkout r1.10
 bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package
 bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 ```
-
-
