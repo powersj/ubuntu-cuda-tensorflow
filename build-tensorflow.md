@@ -30,13 +30,13 @@ This includes all the necessary build tools and CUDA packages. Afterwards it lin
 apt-get install --yes nvidia-headless-390 nvidia-utils-390 nvidia-cuda-toolkit libcupti-dev python3-numpy python3-dev python3-pip python3-wheel
 
 mkdir -p /usr/local/cuda /usr/local/cuda/extras/CUPTI /usr/local/cuda/nvvm
-ln -s /usr/bin /usr/local/cuda/bin
-ln -s /usr/include /usr/local/cuda/include
-ln -s /usr/lib/x86_64-linux-gnu /usr/local/cuda/lib64
-ln -s /usr/local/cuda/lib64 /usr/local/cuda/lib
-ln -s /usr/include /usr/local/cuda/extras/CUPTI/include
-ln -s /usr/lib/x86_64-linux-gnu /usr/local/cuda/extras/CUPTI/lib64
-ln -s /usr/lib/nvidia-cuda-toolkit/libdevice /usr/local/cuda/nvvm/libdevice
+sudo ln -s /usr/bin /usr/local/cuda/bin
+sudo ln -s /usr/include /usr/local/cuda/include
+sudo ln -s /usr/lib/x86_64-linux-gnu /usr/local/cuda/lib64
+sudo ln -s /usr/local/cuda/lib64 /usr/local/cuda/lib
+sudo ln -s /usr/include /usr/local/cuda/extras/CUPTI/include
+sudo ln -s /usr/lib/x86_64-linux-gnu /usr/local/cuda/extras/CUPTI/lib64
+sudo ln -s /usr/lib/nvidia-cuda-toolkit/libdevice /usr/local/cuda/nvvm/libdevice
 ```
 
 ## Install cuDNN and NCCL
@@ -45,25 +45,25 @@ I need to investigate how much of these next two steps are required. However, in
 
 ```shell
 # wherever you unziped the downloaded versions to
-cd /root/cuDNN 
-cp include/* /usr/local/cuda/include/
+cd /root/cuda
+sudo cp include/* /usr/local/cuda/include/
 # assumes version 7.1.3
-cp lib64/libcudnn.so.7.1.3 lib64/libcudnn_static.a /usr/local/cuda/lib64/
+sudo cp lib64/libcudnn.so.7.1.3 lib64/libcudnn_static.a /usr/local/cuda/lib64/
 cd /usr/lib/x86_64-linux-gnu
-ln -s libcudnn.so.7.1.3 libcudnn.so.7
-ln -s libcudnn.so.7 libcudnn.so
+sudo ln -s libcudnn.so.7.1.3 libcudnn.so.7
+sudo ln -s libcudnn.so.7 libcudnn.so
 
 # wherever you unziped the downloaded versions to
 cd /root/NCCL
-cp *.txt /usr/local/cuda/nccl
-cp include/*.h /usr/include/
+sudo cp *.txt /usr/local/cuda/nccl
+sudo cp include/*.h /usr/include/
 # assumes version 2.1.15
-cp lib/libnccl.so.2.1.15 lib/libnccl_static.a /usr/lib/x86_64-linux-gnu/
-ln -s /usr/include/nccl.h /usr/local/cuda/nccl/include/nccl.h
+sudo cp lib/libnccl.so.2.1.15 lib/libnccl_static.a /usr/lib/x86_64-linux-gnu/
+sudo ln -s /usr/include/nccl.h /usr/local/cuda/nccl/include/nccl.h
 cd /usr/lib/x86_64-linux-gnu
-ln -s libnccl.so.2.1.15 libnccl.so.2
-ln -s libnccl.so.2 libnccl.so
-for i in libnccl*; do ln -s /usr/lib/x86_64-linux-gnu/$i /usr/local/cuda/nccl/lib/$i; done
+sudo ln -s libnccl.so.2.1.15 libnccl.so.2
+sudo ln -s libnccl.so.2 libnccl.so
+for i in libnccl*; do sudo ln -s /usr/lib/x86_64-linux-gnu/$i /usr/local/cuda/nccl/lib/$i; done
 ```
 
 ## Link Python to Python3

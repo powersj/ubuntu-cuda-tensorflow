@@ -1,28 +1,45 @@
 #!/usr/bin/env python3
-"""Run matrix multiplication with Tensorflow on a GPU and CPU."""
+"""Run matrix multiplication with Tensorflow on a GPU and CPU.
 
+This is a short demo of various matrix sizes to show how a GPU can
+become more efficient at calculating matrix multiplication with
+Tensorflow and CUDA.
+"""
+
+import argparse
 import sys
 import time
 
 from tabulate import tabulate
 import tensorflow as tf
 
-
-DEVICES = [
-    '/gpu:0',
-    '/cpu:0'
-]
-
 MATRIX_SHAPES = [
-    (1000, 1000),
-    (10000, 10000),
-    (100000, 100000),
-    (1000000, 1000000)
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024,
+    2048,
+    4096,
+    8192,
 ]
 
 
 def create_matrix(matrix_shape):
-    """Create a matrix of specified shape."""
+    """Create a matrix of specified shape.
+
+    Args:
+        matrix_shape: tuple of (x, y)
+    Returns:
+        tensor of random values from a uniform distribution
+
+    """
     return tf.random_uniform(
         shape=matrix_shape,
         minval=0,
@@ -32,32 +49,59 @@ def create_matrix(matrix_shape):
 
 
 def time_tf_matrixmul(device, matrix_shape):
-    """Run tensorflow with device and matrix size."""
-    with tf.device(device):
-        matrix_a = create_matrix(matrix_shape)
-        matrix_b = create_matrix(matrix_shape)
-        matmul = tf.matmul(matrix_a, matrix_b)
+    """Run tensorflow with device and matrix size.
 
-    session = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+    Args:
+        device: the name of the tensorflow device to use
+        matrix_shape: tuple of (x, y)
+    Returns:
+        time in seconds for matrix multiplication operation
 
-    start = time.time()
-    session.run(matmul)
-    end = time.time()
+    """
+    with tf.Session() as session:
+        with tf.device(device):
+            matrix_a = create_matrix(matrix_shape)
+            matrix_b = create_matrix(matrix_shape)
+
+            start = time.time()
+            session.run(tf.matmul(matrix_a, matrix_b))
+            end = time.time()
 
     return round(end - start, 2)
 
 
-def bench():
-    """Run CPU and GPU times."""
-    results = []
-    for device in DEVICES:
-        for shape in MATRIX_SHAPES:
-            print('%s with %s' % (device, shape))
-            time = time_tf_matrixmul(device, shape)
-            results.append([device, shape, time])
+def bench(device):
+    """Run matrix multiplication on various sizes.
 
-    print(tabulate(results, headers=['Device', 'Shape', 'Time (s)']))
+    Args:
+        device: the name of the tensorflow device to use
+    """
+    results = []
+    for shape in MATRIX_SHAPES:
+        print('%s with %sx%s' % (device, shape, shape))
+        time = time_tf_matrixmul(device, (shape, shape))
+        results.append([device, shape, time])
+
+    print(tabulate(results, headers=['Shape', 'Time']))
+
+
+def launch():
+    """Set up arguments and launch testing on requested devices."""
+    parser = argparse.ArgumentParser(prog='bench')
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        '--cpu', action='store_true', help='run with cpu'
+    )
+    group.add_argument(
+        '--gpu', action='store_true', help='run with gpu'
+    )
+
+    args = parser.parse_args()
+    if args.gpu:
+        bench('/gpu:0')
+    if args.cpu:
+        bench('/cpu:0')
 
 
 if __name__ == '__main__':
-    sys.exit(bench())
+    sys.exit(launch())
