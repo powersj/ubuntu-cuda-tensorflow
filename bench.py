@@ -80,7 +80,7 @@ def bench(device):
     for shape in MATRIX_SHAPES:
         print('%s with %sx%s' % (device, shape, shape))
         time = time_tf_matrixmul(device, (shape, shape))
-        results.append([device, shape, time])
+        results.append([shape, time])
 
     print(tabulate(results, headers=['Shape', 'Time']))
 
