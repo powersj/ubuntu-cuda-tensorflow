@@ -10,6 +10,5 @@ clean:
 
 venv:
 	$(PYTHON) -m virtualenv -p /usr/bin/$(PYTHON) venv
-	venv/bin/pip install -Ur requirements.txt
 	@echo "Now run the following to activate the virtual env:"
 	@echo ". venv/bin/activate"

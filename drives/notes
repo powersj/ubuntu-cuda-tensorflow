@@ -1,0 +1,34 @@
+Data
+----------------------------------------------------------------------
+
+Failure Features
+https://www.backblaze.com/blog/what-smart-stats-indicate-hard-drive-failures/
+
+Attribute 		Description
+---------       -----------------------------
+SMART 5 		Reallocated Sectors Count
+SMART 187 		Reported Uncorrectable Errors
+SMART 188 		Command Timeout
+SMART 197 		Current Pending Sector Count
+SMART 198 		Uncorrectable Sector Count
+
+
+
+Guides
+----------------------------------------------------------------------
+Examples:
+https://github.com/aymericdamien/TensorFlow-Examples/blob/master/examples/2_BasicModels/logistic_regression.py
+
+Official Example with numerical data:
+https://github.com/tensorflow/tensorflow/blob/r1.10/tensorflow/examples/get_started/regression/linear_regression.py
+
+Show example of plotting accuracy over epoch:
+https://www.kaggle.com/autuanliuyc/logistic-regression-with-tensorflow
+
+
+
+Intall
+----------------------------------------------------------------------
+CUDA Toolkit:
+https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_384.81_linux-run
+
